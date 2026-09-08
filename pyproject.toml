@@ -1,3 +1,14 @@
+[project]
+name = "money-tracker"
+version = "0.1.0"
+description = "Personal money tracker with Lunch Money-style CSV import"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110,<1",
+    "uvicorn[standard]>=0.29,<1",
+    "python-multipart>=0.0.9",
+]
+
 [tool.ruff]
 line-length = 110
 target-version = "py310"
