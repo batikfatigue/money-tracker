@@ -56,3 +56,10 @@ th { color: var(--muted); font-weight: 500; }
 .muted { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
 .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #eef2ff; color: var(--accent); font-size: 0.8rem; }
 .badge.tag { background: #ecfdf5; color: #047857; }
+
+button.secondary { background: #fff; color: var(--text, #111827); border: 1px solid #d1d5db; }
+.login-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+.login-box { background: #fff; padding: 32px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.1); width: 320px; display: flex; flex-direction: column; gap: 12px; }
+.login-box h1 { margin: 0; }
+.login-box input { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 1rem; }
+.login-box .status { margin: 0; }

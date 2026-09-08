@@ -3,11 +3,11 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Annotated
 
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, File, Form, HTTPException, Query, Request, UploadFile
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from app import db
+from app import auth, db
 from app.csv_import import CSVFormatError, parse_csv
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
@@ -22,9 +22,55 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(title="Money Tracker", lifespan=lifespan)
 
 
+@app.middleware("http")
+async def require_login(request: Request, call_next):
+    path = request.url.path
+    public = path in ("/login", "/logout") or path.startswith("/static/")
+    if auth.enabled() and not public and not auth.verify_token(request.cookies.get(auth.COOKIE_NAME)):
+        if path.startswith("/api/"):
+            return JSONResponse({"detail": "Not authenticated"}, status_code=401)
+        return RedirectResponse("/login", status_code=303)
+    return await call_next(request)
+
+
 @app.get("/")
 def index() -> FileResponse:
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))
+
+
+@app.get("/login")
+def login_page(request: Request) -> Response:
+    if not auth.enabled() or auth.verify_token(request.cookies.get(auth.COOKIE_NAME)):
+        return RedirectResponse("/", status_code=303)
+    return FileResponse(os.path.join(STATIC_DIR, "login.html"))
+
+
+@app.post("/login")
+def login(request: Request, password: Annotated[str, Form()]) -> Response:
+    if not auth.check_password(password):
+        return RedirectResponse("/login?error=1", status_code=303)
+    resp = RedirectResponse("/", status_code=303)
+    resp.set_cookie(
+        auth.COOKIE_NAME,
+        auth.issue_token(),
+        max_age=auth.SESSION_TTL,
+        httponly=True,
+        samesite="lax",
+        secure=request.url.scheme == "https",
+    )
+    return resp
+
+
+@app.post("/logout")
+def logout() -> Response:
+    resp = RedirectResponse("/login", status_code=303)
+    resp.delete_cookie(auth.COOKIE_NAME)
+    return resp
+
+
+@app.get("/api/auth")
+def auth_status() -> dict:
+    return {"enabled": auth.enabled()}
 
 
 @app.post("/api/import")

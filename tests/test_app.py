@@ -119,3 +119,44 @@ def test_clear(client):
     client.post("/api/import", files={"file": ("x.csv", SAMPLE, "text/csv")})
     assert client.delete("/api/transactions").json()["deleted"] == 4
     assert client.get("/api/summary").json()["count"] == 0
+
+
+@pytest.fixture
+def secured(monkeypatch):
+    monkeypatch.setenv("MONEY_TRACKER_PASSWORD", "hunter2")
+    from app.main import app
+
+    with TestClient(app, follow_redirects=False) as c:
+        yield c
+
+
+def test_auth_disabled_when_no_password(client):
+    assert client.get("/api/auth").json() == {"enabled": False}
+    assert client.get("/api/summary").status_code == 200
+    assert client.get("/login", follow_redirects=False).status_code == 303
+
+
+def test_auth_blocks_until_login(secured):
+    assert secured.get("/api/summary").status_code == 401
+    assert secured.get("/").status_code == 303
+    assert secured.get("/login").status_code == 200
+
+    bad = secured.post("/login", data={"password": "wrong"})
+    assert bad.status_code == 303 and "error" in bad.headers["location"]
+    assert secured.get("/api/summary").status_code == 401
+
+    ok = secured.post("/login", data={"password": "hunter2"})
+    assert ok.status_code == 303 and ok.headers["location"] == "/"
+    assert secured.get("/api/summary").status_code == 200
+    assert secured.get("/").status_code == 200
+
+    secured.post("/logout")
+    assert secured.get("/api/summary").status_code == 401
+
+
+def test_tampered_cookie_rejected(secured):
+    secured.post("/login", data={"password": "hunter2"})
+    token = secured.cookies["mt_session"]
+    tampered = token[:-1] + ("0" if token[-1] != "0" else "1")
+    secured.cookies.clear()
+    assert secured.get("/api/summary", cookies={"mt_session": tampered}).status_code == 401

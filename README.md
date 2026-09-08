@@ -14,6 +14,12 @@ uvicorn app.main:app --reload
 
 Open http://127.0.0.1:8000 and import `sample_data/transactions.csv` to try it out.
 
+## Login
+
+Set `MONEY_TRACKER_PASSWORD` to require a password; the UI and all `/api/*` routes are then protected by a
+signed session cookie (30 days). Optionally set `MONEY_TRACKER_SECRET` to a random string so sessions survive a
+password change. When `MONEY_TRACKER_PASSWORD` is unset (local dev) the app is open.
+
 ## CSV format
 
 The importer follows the [Lunch Money CSV import format](https://support.lunchmoney.app/guides/import-via-csv). A header row is required; header names are matched case-insensitively.

@@ -22,6 +22,10 @@ function showStatus(msg, isError = false) {
 
 async function api(path, opts) {
   const res = await fetch(path, opts);
+  if (res.status === 401) {
+    location.href = "/login";
+    throw new Error("Not authenticated");
+  }
   const body = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(body.detail || res.statusText);
   return body;
@@ -133,4 +137,5 @@ $("reset-filters").addEventListener("click", () => {
   refresh();
 });
 
+api("/api/auth").then((a) => ($("logout-form").hidden = !a.enabled));
 refresh().catch((err) => showStatus(err.message, true));

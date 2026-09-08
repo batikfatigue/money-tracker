@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in · Money Tracker</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="login-page">
+  <form class="login-box" method="post" action="/login">
+    <h1>Money Tracker</h1>
+    <p class="muted">Enter your password to continue.</p>
+    <p id="login-error" class="status error" hidden>Incorrect password.</p>
+    <input type="password" name="password" placeholder="Password" autofocus required autocomplete="current-password" />
+    <button type="submit">Sign in</button>
+  </form>
+  <script>
+    if (new URLSearchParams(location.search).has("error")) document.getElementById("login-error").hidden = false;
+  </script>
+</body>
+</html>
