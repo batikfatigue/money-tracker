@@ -75,8 +75,10 @@ function renderTransactions(data) {
     .map(
       (t) => `<tr>
         <td>${t.date}</td>
-        <td>${escapeHtml(t.description)}</td>
+        <td>${escapeHtml(t.payee)}</td>
         <td><span class="badge">${escapeHtml(t.category)}</span></td>
+        <td>${t.tags.map((tag) => `<span class="badge tag">${escapeHtml(tag)}</span>`).join(" ")}</td>
+        <td class="muted">${escapeHtml(t.notes)}</td>
         <td class="num ${t.amount < 0 ? "expense" : "income"}">${fmt.format(t.amount)}</td>
       </tr>`
     )

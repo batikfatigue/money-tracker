@@ -55,3 +55,4 @@ th { color: var(--muted); font-weight: 500; }
 .num { text-align: right; }
 .muted { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
 .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #eef2ff; color: var(--accent); font-size: 0.8rem; }
+.badge.tag { background: #ecfdf5; color: #047857; }

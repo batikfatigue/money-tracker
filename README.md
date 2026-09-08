@@ -16,17 +16,23 @@ Open http://127.0.0.1:8000 and import `sample_data/transactions.csv` to try it o
 
 ## CSV format
 
-A header row is required. Column names are matched case-insensitively:
+The importer follows the [Lunch Money CSV import format](https://support.lunchmoney.app/guides/import-via-csv). A header row is required; header names are matched case-insensitively.
 
-| Field       | Accepted headers                                              |
-|-------------|---------------------------------------------------------------|
-| date        | `date`, `transaction date`, `posted date`, `trans date`       |
-| description | `description`, `memo`, `payee`, `name`, `details`, `narrative`|
-| category    | `category`, `type` (optional, defaults to `Uncategorized`)     |
-| amount      | `amount`, `value`, `sum` — negative = expense, positive = income |
-|             | or `debit`/`withdrawal` + `credit`/`deposit` columns           |
+| Column                  | Required | Notes                                                        |
+|-------------------------|----------|--------------------------------------------------------------|
+| `date`                  | yes      | `YYYY-MM-DD` or `YYYY/MM/DD` preferred (US/EU and `April 25, 2026` styles also parse) |
+| `payee` (or `description`) | yes   | Name of the transaction                                      |
+| amount columns          | yes      | One of the three notations below                             |
+| `notes`                 | no       | Free text                                                    |
+| `categories`            | no       | Defaults to `Uncategorized`                                  |
+| `tags`                  | no       | Comma-separated list                                         |
 
-Dates in `YYYY-MM-DD`, `DD/MM/YYYY`, `MM/DD/YYYY`, `DD-MM-YYYY`, `YYYY/MM/DD`, `DD Mon YYYY`, `Mon DD, YYYY` are recognized.
+Amount notations:
+
+1. **Single column** — `amount` (or `debit/credit`) with a sign: `-38.50` is an expense, `+100` is income.
+2. **Double column** — `debit` + `credit`, or `outflow` + `inflow`. Values are absolute; the column decides the sign.
+3. **Amount + type** — `amount` plus an `amount type` (or `debit/credit`) column whose value is one of `outflow`, `inflow`, `debit`, `credit`.
+
 Re-importing the same file is safe: identical rows are skipped as duplicates.
 
 ## API

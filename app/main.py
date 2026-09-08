@@ -39,9 +39,9 @@ async def import_csv(file: Annotated[UploadFile, File()]) -> dict:
     with db.get_conn() as conn:
         for t in rows:
             cur = conn.execute(
-                "INSERT OR IGNORE INTO transactions (date, description, category, amount, fingerprint) "
-                "VALUES (?, ?, ?, ?, ?)",
-                (t.date, t.description, t.category, t.amount, t.fingerprint),
+                "INSERT OR IGNORE INTO transactions "
+                "(date, payee, category, amount, notes, tags, fingerprint) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (t.date, t.payee, t.category, t.amount, t.notes, ",".join(t.tags), t.fingerprint),
             )
             imported += cur.rowcount
     return {"parsed": len(rows), "imported": imported, "skipped_duplicates": len(rows) - imported}
@@ -73,11 +73,16 @@ def list_transactions(
     with db.get_conn() as conn:
         total = conn.execute(f"SELECT COUNT(*) FROM transactions{where}", params).fetchone()[0]
         rows = conn.execute(
-            f"SELECT id, date, description, category, amount FROM transactions{where} "
+            f"SELECT id, date, payee, category, amount, notes, tags FROM transactions{where} "
             "ORDER BY date DESC, id DESC LIMIT ? OFFSET ?",
             [*params, limit, offset],
         ).fetchall()
-    return {"total": total, "items": [dict(r) for r in rows]}
+    items = []
+    for r in rows:
+        item = dict(r)
+        item["tags"] = [t for t in item["tags"].split(",") if t]
+        items.append(item)
+    return {"total": total, "items": items}
 
 
 @app.get("/api/summary")

@@ -1,25 +1,25 @@
-Date,Description,Category,Amount
-2024-01-02,Salary,Income,4200.00
-2024-01-03,Whole Foods,Groceries,-96.42
-2024-01-05,Starbucks,Food & Drink,-6.75
-2024-01-08,Shell Gas,Transport,-52.10
-2024-01-12,Netflix,Entertainment,-15.99
-2024-01-15,Rent,Housing,-1500.00
-2024-01-20,Trader Joe's,Groceries,-73.18
-2024-01-25,Electric Bill,Utilities,-88.30
-2024-02-01,Salary,Income,4200.00
-2024-02-03,Costco,Groceries,-184.55
-2024-02-07,Uber,Transport,-23.40
-2024-02-10,Chipotle,Food & Drink,-12.85
-2024-02-14,Flowers,Gifts,-45.00
-2024-02-15,Rent,Housing,-1500.00
-2024-02-18,Spotify,Entertainment,-10.99
-2024-02-22,Internet,Utilities,-65.00
-2024-03-01,Salary,Income,4200.00
-2024-03-04,Whole Foods,Groceries,-112.30
-2024-03-09,Movie Tickets,Entertainment,-28.00
-2024-03-11,Gas,Transport,-48.75
-2024-03-15,Rent,Housing,-1500.00
-2024-03-19,Doctor Visit,Health,-120.00
-2024-03-24,Electric Bill,Utilities,-91.10
-2024-03-28,Freelance Payment,Income,650.00
+date,payee,amount,notes,categories,tags
+2024-01-02,Salary,4200.00,January paycheck,Income,work
+2024-01-03,Whole Foods,-96.42,,Groceries,
+2024-01-05,Starbucks,-6.75,,Food & Drink,coffee
+2024-01-08,Shell Gas,-52.10,,Transport,car
+2024-01-12,Netflix,-15.99,Monthly subscription,Entertainment,subscription
+2024-01-15,Rent,-1500.00,,Housing,
+2024-01-20,Trader Joe's,-73.18,,Groceries,
+2024-01-25,Electric Bill,-88.30,,Utilities,bills
+2024-02-01,Salary,4200.00,February paycheck,Income,work
+2024-02-03,Costco,-184.55,Bulk shopping,Groceries,
+2024-02-07,Uber,-23.40,,Transport,
+2024-02-10,Chipotle,-12.85,,Food & Drink,
+2024-02-14,Flowers,-45.00,Valentine's Day,Gifts,
+2024-02-15,Rent,-1500.00,,Housing,
+2024-02-18,Spotify,-10.99,,Entertainment,subscription
+2024-02-22,Internet,-65.00,,Utilities,bills
+2024-03-01,Salary,4200.00,March paycheck,Income,work
+2024-03-04,Whole Foods,-112.30,,Groceries,
+2024-03-09,Movie Tickets,-28.00,,Entertainment,"date night, weekend"
+2024-03-11,Gas,-48.75,,Transport,car
+2024-03-15,Rent,-1500.00,,Housing,
+2024-03-19,Doctor Visit,-120.00,Copay,Health,
+2024-03-24,Electric Bill,-91.10,,Utilities,bills
+2024-03-28,Freelance Payment,650.00,Side project,Income,"work, freelance"

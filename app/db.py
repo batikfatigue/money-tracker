@@ -10,9 +10,11 @@ SCHEMA = """
 CREATE TABLE IF NOT EXISTS transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT NOT NULL,
-    description TEXT NOT NULL,
+    payee TEXT NOT NULL,
     category TEXT NOT NULL DEFAULT 'Uncategorized',
     amount REAL NOT NULL,
+    notes TEXT NOT NULL DEFAULT '',
+    tags TEXT NOT NULL DEFAULT '',
     fingerprint TEXT NOT NULL UNIQUE
 );
 CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(date);
