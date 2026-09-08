@@ -20,15 +20,16 @@ CREATE INDEX IF NOT EXISTS idx_transactions_category ON transactions(category);
 """
 
 
-def init_db(path: str = DB_PATH) -> None:
+def init_db(path: str | None = None) -> None:
+    path = path or DB_PATH
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     with sqlite3.connect(path) as conn:
         conn.executescript(SCHEMA)
 
 
 @contextmanager
-def get_conn(path: str = DB_PATH) -> Iterator[sqlite3.Connection]:
-    conn = sqlite3.connect(path)
+def get_conn(path: str | None = None) -> Iterator[sqlite3.Connection]:
+    conn = sqlite3.connect(path or DB_PATH)
     conn.row_factory = sqlite3.Row
     try:
         yield conn

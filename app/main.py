@@ -15,7 +15,7 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    db.init_db(db.DB_PATH)
+    db.init_db()
     yield
 
 
