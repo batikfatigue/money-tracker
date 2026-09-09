@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: money-tracker
+    runtime: docker
+    plan: free
+    healthCheckPath: /login
+    envVars:
+      - key: MONEY_TRACKER_PASSWORD
+        sync: false
+      - key: MONEY_TRACKER_SECRET
+        generateValue: true
