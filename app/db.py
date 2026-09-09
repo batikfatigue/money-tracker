@@ -3,7 +3,12 @@ import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
 
-DEFAULT_DB_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "money.db")
+VOLUME_DIR = "/data"  # persistent volume mount point when deployed
+DEFAULT_DB_PATH = (
+    os.path.join(VOLUME_DIR, "money.db")
+    if os.path.isdir(VOLUME_DIR)
+    else os.path.join(os.path.dirname(__file__), "..", "data", "money.db")
+)
 DB_PATH = os.environ.get("MONEY_TRACKER_DB", DEFAULT_DB_PATH)
 
 SCHEMA = """

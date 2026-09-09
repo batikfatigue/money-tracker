@@ -9,6 +9,13 @@ dependencies = [
     "python-multipart>=0.0.9",
 ]
 
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.ruff]
 line-length = 110
 target-version = "py310"
