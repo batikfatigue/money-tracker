@@ -16,6 +16,7 @@ SAMPLE = """date,payee,amount,notes,categories,tags
 def tmp_db(tmp_path, monkeypatch):
     path = str(tmp_path / "test.db")
     monkeypatch.setattr(db, "DB_PATH", path)
+    monkeypatch.delenv("MONEY_TRACKER_PASSWORD", raising=False)
     db.init_db(path)
 
 
