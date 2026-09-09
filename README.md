@@ -20,7 +20,17 @@ Set `MONEY_TRACKER_PASSWORD` to require a password; the UI and all `/api/*` rout
 signed session cookie (30 days). Optionally set `MONEY_TRACKER_SECRET` to a random string so sessions survive a
 password change. When `MONEY_TRACKER_PASSWORD` is unset (local dev) the app is open.
 
-## Deploy (Fly.io)
+## Deploy
+
+### Render (free)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/batikfatigue/money-tracker)
+
+`render.yaml` defines a free Docker web service; you'll be prompted for `MONEY_TRACKER_PASSWORD` during setup.
+Free instances have no persistent disk, so transactions are lost when the service redeploys or is recreated —
+just re-import your CSVs (duplicates are skipped). The service also sleeps after 15 min idle; first load takes ~30s.
+
+### Fly.io (persistent, ~$0–3/mo)
 
 A `Dockerfile` and `fly.toml` are included; the SQLite DB is stored on a volume mounted at `/data`.
 
