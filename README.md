@@ -20,6 +20,17 @@ Set `MONEY_TRACKER_PASSWORD` to require a password; the UI and all `/api/*` rout
 signed session cookie (30 days). Optionally set `MONEY_TRACKER_SECRET` to a random string so sessions survive a
 password change. When `MONEY_TRACKER_PASSWORD` is unset (local dev) the app is open.
 
+## Deploy (Fly.io)
+
+A `Dockerfile` and `fly.toml` are included; the SQLite DB is stored on a volume mounted at `/data`.
+
+```bash
+fly launch --no-deploy --copy-config          # pick an app name/region
+fly volumes create money_data --size 1
+fly secrets set MONEY_TRACKER_PASSWORD=<your password> MONEY_TRACKER_SECRET=$(openssl rand -hex 32)
+fly deploy
+```
+
 ## CSV format
 
 The importer follows the [Lunch Money CSV import format](https://support.lunchmoney.app/guides/import-via-csv). A header row is required; header names are matched case-insensitively.
